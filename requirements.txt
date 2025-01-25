@@ -1,0 +1,5 @@
+google-generativeai>=0.3.2
+python-dotenv
+rich
+prompt_toolkit
+pyperclip

@@ -1,4 +1,4 @@
-from openai import OpenAI
+import google.generativeai as genai
 import os
 from dotenv import load_dotenv
 from rich import print as rprint
@@ -7,10 +7,10 @@ from prompt_toolkit import PromptSession
 from prompt_toolkit.styles import Style
 from rich.syntax import Syntax
 import pyperclip
-import time  # Add time import
+import time  
 
 # Model Constants
-DEEPSEEK_MODEL = "deepseek-reasoner"
+GEMINI_MODEL = "gemini-pro"
 OPENROUTER_MODEL = "openai/gpt-4o-mini"
 
 # Load environment variables
@@ -18,11 +18,9 @@ load_dotenv()
 
 class ModelChain:
     def __init__(self):
-        # Initialize DeepSeek client
-        self.deepseek_client = OpenAI(
-            api_key=os.getenv("DEEPSEEK_API_KEY"),
-            base_url="https://api.deepseek.com"
-        )
+        # Initialize Gemini client
+        genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+        self.gemini_model = genai.GenerativeModel(GEMINI_MODEL)
         
         # Initialize OpenRouter client
         self.openrouter_client = OpenAI(
@@ -30,10 +28,10 @@ class ModelChain:
             api_key=os.getenv("OPENROUTER_API_KEY")
         )
         
-        self.deepseek_messages = []
-        self.openrouter_messages = []  # New: Add message history for OpenRouter
+        self.gemini_messages = []
+        self.openrouter_messages = []  
         self.current_model = OPENROUTER_MODEL
-        self.show_reasoning = True  # New flag to track reasoning visibility
+        self.show_reasoning = True  
 
     def set_model(self, model_name):
         self.current_model = model_name
@@ -42,33 +40,28 @@ class ModelChain:
         return self.current_model
 
     def get_deepseek_reasoning(self, user_input):
-        start_time = time.time()  # Start timing
-        # Keep track of both user input and previous AI responses
-        self.deepseek_messages.append({"role": "user", "content": user_input})
+        start_time = time.time()  
+        self.gemini_messages.append(user_input)
         
         if self.show_reasoning:
             rprint("\n[blue]Reasoning Process[/]")
         
-        response = self.deepseek_client.chat.completions.create(
-            model=DEEPSEEK_MODEL,
-            max_tokens=1,
-            messages=self.deepseek_messages,
-            stream=True
+        # Generate response with Gemini
+        response = self.gemini_model.generate_content(
+            user_input,
+            generation_config={
+                "temperature": 0.7,
+                "candidate_count": 1
+            }
         )
 
         reasoning_content = ""
-        final_content = ""
+        if response.text:
+            reasoning_content = response.text
+            if self.show_reasoning:
+                print(reasoning_content, end="", flush=True)
 
-        for chunk in response:
-            if chunk.choices[0].delta.reasoning_content:
-                reasoning_piece = chunk.choices[0].delta.reasoning_content
-                reasoning_content += reasoning_piece
-                if self.show_reasoning:
-                    print(reasoning_piece, end="", flush=True)
-            elif chunk.choices[0].delta.content:
-                final_content += chunk.choices[0].delta.content
-
-        elapsed_time = time.time() - start_time  # Calculate elapsed time
+        elapsed_time = time.time() - start_time  
         if elapsed_time >= 60:
             time_str = f"{elapsed_time/60:.1f} minutes"
         else:
@@ -112,7 +105,7 @@ class ModelChain:
             rprint(f"\n[red]Error in streaming response: {str(e)}[/]")
             return "Error occurred while streaming response"
         
-        self.deepseek_messages.append({"role": "assistant", "content": full_response})
+        self.gemini_messages.append({"role": "assistant", "content": full_response})
         self.openrouter_messages.append({"role": "assistant", "content": full_response})
         
         print("\n")
@@ -129,7 +122,7 @@ def main():
     
     rprint(Panel.fit(
         "[bold cyan]Retrival augmented thinking[/]",
-        title="[bold cyan]RAT 🧠[/]",
+        title="[bold cyan]RAT [/]",
         border_style="cyan"
     ))
     rprint("[yellow]Commands:[/]")
@@ -143,11 +136,11 @@ def main():
             user_input = session.prompt("\nYou: ", style=style).strip()
             
             if user_input.lower() == 'quit':
-                print("\nGoodbye! 👋")
+                print("\nGoodbye! ")
                 break
 
             if user_input.lower() == 'clear':
-                chain.deepseek_messages = []
+                chain.gemini_messages = []
                 chain.openrouter_messages = []
                 rprint("\n[magenta]Chat history cleared![/]\n")
                 continue

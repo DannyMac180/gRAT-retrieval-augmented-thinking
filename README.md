@@ -2,18 +2,16 @@
 
 > *Enhancing AI responses through structured reasoning and knowledge retrieval*
 
-RAT is a powerful tool that improves AI responses by leveraging DeepSeek's reasoning capabilities to guide other models through a structured thinking process.
+RAT is a powerful tool that improves AI responses by leveraging Google Gemini 2.0's Flash Thinking capabilities to guide other models through a structured thinking process.
 
 ## 💡 Origin & Ideation
 
-The idea for RAT emerged from an interesting discovery about DeepSeek-R1 API capabilities. By setting the final response token to 1 while retrieving the thinking process, it became possible to separate the reasoning stage from the final response generation. This insight led to the development of a two-stage approach that combines DeepSeek's exceptional reasoning abilities with various response models.
-
-Link to my original concept in this [Twitter thread](https://x.com/skirano/status/1881922469411643413).
+The idea for RAT emerged from exploring ways to separate the reasoning process from response generation. Using Gemini 2.0's Flash Thinking feature, we can access the model's internal thought process before generating the final response. This insight led to the development of a two-stage approach that combines Gemini's exceptional reasoning abilities with various response models.
 
 ## How It Works
 
 RAT employs a two-stage approach:
-1. **Reasoning Stage** (DeepSeek): Generates detailed reasoning and analysis for each query
+1. **Reasoning Stage** (Gemini 2.0): Generates detailed reasoning and analysis for each query using Flash Thinking
 2. **Response Stage** (OpenRouter): Utilizes the reasoning context to provide informed, well-structured answers
 
 This approach ensures more thoughtful, contextually aware, and reliable responses.
@@ -29,10 +27,8 @@ This approach ensures more thoughtful, contextually aware, and reliable response
 • Python 3.11 or higher  
 • A .env file containing:
   ```plaintext
-  DEEPSEEK_API_KEY=your_deepseek_api_key_here
+  GEMINI_API_KEY=your_gemini_api_key_here
   OPENROUTER_API_KEY=your_openrouter_api_key_here
-  optional
-  ANTHROPIC_API_KEY=your_anthropic_api_key_here
   ```
 
 ## 🚀 Installation
@@ -56,10 +52,8 @@ This will install RAT as a command-line tool, allowing you to run it from anywhe
 
 1. Ensure your .env file is configured with:
    ```plaintext
-   DEEPSEEK_API_KEY=your_deepseek_api_key_here
+   GEMINI_API_KEY=your_gemini_api_key_here
    OPENROUTER_API_KEY=your_openrouter_api_key_here
-   optional
-   ANTHROPIC_API_KEY=your_anthropic_api_key_here 
    ```
 
 2. Run RAT from anywhere:
@@ -76,22 +70,10 @@ This will install RAT as a command-line tool, allowing you to run it from anywhe
 
 
 ## 🚀 Versions
-You can also run each script on its own:
-
-### Standard Version (rat.py)
-The default implementation using DeepSeek for reasoning and OpenRouter for responses.
-Run it using:
+You can run the script using:
 ```bash
 uv run rat.py
 ```
-
-### Claude-Specific Version (rat-claude.py)
-A specialized implementation designed for Claude models that leverages Anthropic's message prefilling capabilities. This version makes Claude believe the reasoning process is its own internal thought process, leading to more coherent and contextually aware responses.
-Run it using:
-```bash
-uv run rat-claude.py
-```
-
 
 ## 🤝 Contributing
 
@@ -117,4 +99,3 @@ GitHub: https://github.com/yourusername/rat
 ## Star History
 
 [![Star History Chart](https://api.star-history.com/svg?repos=Doriandarko/RAT-retrieval-augmented-thinking&type=Date)](https://star-history.com/#Doriandarko/RAT-retrieval-augmented-thinking&Date)
-

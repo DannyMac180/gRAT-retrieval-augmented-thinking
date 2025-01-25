@@ -3,3 +3,5 @@ python-dotenv
 rich
 prompt_toolkit
 pyperclip
+openai
+anthropic

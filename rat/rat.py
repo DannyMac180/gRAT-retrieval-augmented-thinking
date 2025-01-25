@@ -5,22 +5,26 @@ from rich import print as rprint
 from rich.panel import Panel
 from prompt_toolkit import PromptSession
 from prompt_toolkit.styles import Style
-from rich.syntax import Syntax
-import pyperclip
-import time  
+from openai import OpenAI
+import time
 
 # Model Constants
-GEMINI_MODEL = "gemini-pro"
+GEMINI_MODEL = "gemini-2.0-flash-thinking-exp"
 OPENROUTER_MODEL = "openai/gpt-4o-mini"
 
 # Load environment variables
 load_dotenv()
 
+# Configure Gemini API
+genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+
 class ModelChain:
     def __init__(self):
         # Initialize Gemini client
-        genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
-        self.gemini_model = genai.GenerativeModel(GEMINI_MODEL)
+        self.gemini_client = genai.GenerativeModel(
+            model_name=GEMINI_MODEL,
+            generation_config={"temperature": 0.7}
+        )
         
         # Initialize OpenRouter client
         self.openrouter_client = OpenAI(
@@ -46,12 +50,13 @@ class ModelChain:
         if self.show_reasoning:
             rprint("\n[blue]Reasoning Process[/]")
         
-        # Generate response with Gemini
-        response = self.gemini_model.generate_content(
+        response = self.gemini_client.generate_content(
             user_input,
-            generation_config={
-                "temperature": 0.7,
-                "candidate_count": 1
+            safety_settings={
+                "HARM_CATEGORY_HARASSMENT": "BLOCK_NONE",
+                "HARM_CATEGORY_HATE_SPEECH": "BLOCK_NONE",
+                "HARM_CATEGORY_SEXUALLY_EXPLICIT": "BLOCK_NONE",
+                "HARM_CATEGORY_DANGEROUS_CONTENT": "BLOCK_NONE"
             }
         )
 

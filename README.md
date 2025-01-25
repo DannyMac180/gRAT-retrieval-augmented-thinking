@@ -1,12 +1,15 @@
 # 🧠 gRAT (Gemini Retrieval Augmented Thinking)
 
+This project uses RAT (Retrieval Augmented Thinking) by Skirano
+GitHub: https://github.com/yourusername/rat
+
 > *Enhancing AI responses through structured reasoning and knowledge retrieval*
 
 gRAT is a powerful tool that improves AI responses by leveraging Google Gemini 2.0's Flash Thinking capabilities to guide other models through a structured thinking process.
 
 ## 💡 Origin & Ideation
 
-The idea for gRAT emerged from exploring ways to separate the reasoning process from response generation. Using Gemini 2.0's Flash Thinking feature, we can access the model's internal thought process before generating the final response. This insight led to the development of a two-stage approach that combines Gemini's exceptional reasoning abilities with various response models.
+The idea for gRAT was originally from Pietro Schirano, and it emerged from exploring ways to separate the reasoning process from response generation. Using Gemini 2.0's Flash Thinking feature, we can access the model's internal thought process before generating the final response. This insight led to the development of a two-stage approach that combines Gemini's exceptional reasoning abilities with various response models.
 
 ## How It Works
 

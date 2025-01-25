@@ -15,7 +15,7 @@ dependencies = [
 ]
 
 [project.scripts]
-grat = "rat.rat:main"
+grat = "rat.grat:main"
 
 [build-system]
 requires = ["hatchling"]

@@ -1,4 +1,4 @@
-import google.generativeai as genai
+from google import genai
 import os
 from dotenv import load_dotenv
 from rich import print as rprint
@@ -15,15 +15,12 @@ OPENROUTER_MODEL = "openai/gpt-4o-mini"
 # Load environment variables
 load_dotenv()
 
-# Configure Gemini API
-genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
-
 class ModelChain:
     def __init__(self):
         # Initialize Gemini client
-        self.gemini_client = genai.GenerativeModel(
-            model_name=GEMINI_MODEL,
-            generation_config={"temperature": 0.7}
+        self.gemini_client = genai.Client(
+            api_key=os.getenv("GEMINI_API_KEY"),
+            http_options={'api_version':'v1alpha'}
         )
         
         # Initialize OpenRouter client
@@ -33,9 +30,9 @@ class ModelChain:
         )
         
         self.gemini_messages = []
-        self.openrouter_messages = []  
+        self.openrouter_messages = []
         self.current_model = OPENROUTER_MODEL
-        self.show_reasoning = True  
+        self.show_reasoning = True
 
     def set_model(self, model_name):
         self.current_model = model_name
@@ -44,29 +41,30 @@ class ModelChain:
         return self.current_model
 
     def get_deepseek_reasoning(self, user_input):
-        start_time = time.time()  
+        start_time = time.time()
         self.gemini_messages.append(user_input)
         
         if self.show_reasoning:
             rprint("\n[blue]Reasoning Process[/]")
         
-        response = self.gemini_client.generate_content(
-            user_input,
-            safety_settings={
-                "HARM_CATEGORY_HARASSMENT": "BLOCK_NONE",
-                "HARM_CATEGORY_HATE_SPEECH": "BLOCK_NONE",
-                "HARM_CATEGORY_SEXUALLY_EXPLICIT": "BLOCK_NONE",
-                "HARM_CATEGORY_DANGEROUS_CONTENT": "BLOCK_NONE"
-            }
-        )
-
+        config = {'thinking_config': {'include_thoughts': True}}
         reasoning_content = ""
-        if response.text:
-            reasoning_content = response.text
-            if self.show_reasoning:
-                print(reasoning_content, end="", flush=True)
+        
+        for chunk in self.gemini_client.models.generate_content_stream(
+            model=GEMINI_MODEL,
+            contents=user_input,
+            config=config
+        ):
+            for part in chunk.candidates[0].content.parts:
+                if part.thought:
+                    reasoning_piece = part.text
+                    reasoning_content += reasoning_piece
+                    if self.show_reasoning:
+                        print(f"Model Thought:\n{reasoning_piece}\n", end="", flush=True)
+                else:
+                    print(f"\nModel Response:\n{part.text}\n", end="", flush=True)
 
-        elapsed_time = time.time() - start_time  
+        elapsed_time = time.time() - start_time
         if elapsed_time >= 60:
             time_str = f"{elapsed_time/60:.1f} minutes"
         else:
@@ -126,8 +124,8 @@ def main():
     session = PromptSession(style=style)
     
     rprint(Panel.fit(
-        "[bold cyan]Retrival augmented thinking[/]",
-        title="[bold cyan]RAT [/]",
+        "[bold cyan]Gemini Retrival augmented thinking[/]",
+        title="[bold cyan]gRAT [/]",
         border_style="cyan"
     ))
     rprint("[yellow]Commands:[/]")

@@ -1,16 +1,16 @@
-# 🧠 RAT (Retrieval Augmented Thinking)
+# 🧠 gRAT (Gemini Retrieval Augmented Thinking)
 
 > *Enhancing AI responses through structured reasoning and knowledge retrieval*
 
-RAT is a powerful tool that improves AI responses by leveraging Google Gemini 2.0's Flash Thinking capabilities to guide other models through a structured thinking process.
+gRAT is a powerful tool that improves AI responses by leveraging Google Gemini 2.0's Flash Thinking capabilities to guide other models through a structured thinking process.
 
 ## 💡 Origin & Ideation
 
-The idea for RAT emerged from exploring ways to separate the reasoning process from response generation. Using Gemini 2.0's Flash Thinking feature, we can access the model's internal thought process before generating the final response. This insight led to the development of a two-stage approach that combines Gemini's exceptional reasoning abilities with various response models.
+The idea for gRAT emerged from exploring ways to separate the reasoning process from response generation. Using Gemini 2.0's Flash Thinking feature, we can access the model's internal thought process before generating the final response. This insight led to the development of a two-stage approach that combines Gemini's exceptional reasoning abilities with various response models.
 
 ## How It Works
 
-RAT employs a two-stage approach:
+gRAT employs a two-stage approach:
 1. **Reasoning Stage** (Gemini 2.0): Generates detailed reasoning and analysis for each query using Flash Thinking
 2. **Response Stage** (OpenRouter): Utilizes the reasoning context to provide informed, well-structured answers
 
@@ -36,8 +36,8 @@ Standalone installation
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/Doriandarko/RAT-retrieval-augmented-thinking.git
-   cd RAT-retrieval-augmented-thinking
+   git clone https://github.com/DannyMac180/gRAT-retrieval-augmented-thinking.git
+   cd gRAT-retrieval-augmented-thinking
    ```
 
 
@@ -46,7 +46,7 @@ Standalone installation
    pip install -e .
    ```
 
-This will install RAT as a command-line tool, allowing you to run it from anywhere by simply typing `rat`!
+This will install gRAT as a command-line tool, allowing you to run it from anywhere by simply typing `grat`!
 
 ## 📖 Usage
 
@@ -56,9 +56,9 @@ This will install RAT as a command-line tool, allowing you to run it from anywhe
    OPENROUTER_API_KEY=your_openrouter_api_key_here
    ```
 
-2. Run RAT from anywhere:
+2. Run gRAT from anywhere:
    ```bash
-   rat
+   grat
    ```
 
 3. Available commands:
@@ -72,12 +72,12 @@ This will install RAT as a command-line tool, allowing you to run it from anywhe
 ## 🚀 Versions
 You can run the script using:
 ```bash
-uv run rat.py
+uv run grat.py
 ```
 
 ## 🤝 Contributing
 
-Interested in improving RAT?
+Interested in improving gRAT?
 
 1. Fork the repository
 2. Create your feature branch
@@ -91,11 +91,11 @@ This project is available under the MIT License. See the [LICENSE](LICENSE) file
 If you use this codebase in your projects, please include appropriate credits:
 
 ```plaintext
-This project uses RAT (Retrieval Augmented Thinking) by Skirano
-GitHub: https://github.com/yourusername/rat
+This project uses gRAT (Gemini Retrieval Augmented Thinking) by DannyMac180
+GitHub: https://github.com/DannyMac180/gRAT-retrieval-augmented-thinking
 ```
 ---
 
 ## Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=Doriandarko/RAT-retrieval-augmented-thinking&type=Date)](https://star-history.com/#Doriandarko/RAT-retrieval-augmented-thinking&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=DannyMac180/gRAT-retrieval-augmented-thinking&type=Date)](https://star-history.com/#DannyMac180/gRAT-retrieval-augmented-thinking&Date)

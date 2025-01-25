@@ -1,4 +1,4 @@
-from .rat import main
+from .grat import main
 
 __all__ = ['main']
 

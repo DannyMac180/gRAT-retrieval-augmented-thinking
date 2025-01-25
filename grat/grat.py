@@ -124,7 +124,7 @@ def main():
     session = PromptSession(style=style)
     
     rprint(Panel.fit(
-        "[bold cyan]Gemini Retrival augmented thinking[/]",
+        "[bold cyan]Gemini Retrieval augmented thinking[/]",
         title="[bold cyan]gRAT [/]",
         border_style="cyan"
     ))
